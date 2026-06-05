@@ -1,5 +1,7 @@
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup, Tag
+from urllib.parse import urlparse, urljoin
+
 
 def normalize_url(url):
     parsed_url = urlparse(url)
@@ -25,3 +27,19 @@ def get_first_paragraph_from_html(html: str) -> str:
         if isinstance(p_tag, Tag):
             return p_tag.get_text(strip=True)
     return ""
+def get_urls_from_html(html: str, base_url: str) -> list[str]:
+    soup = BeautifulSoup(html, "html.parser")
+    urls = [] 
+    for a_tag in soup.find_all("a", href=True):
+        href = a_tag["href"]
+        urljoined = urljoin(base_url, href)
+        urls.append(urljoined)
+    return urls
+def get_images_from_html(html: str, base_url: str) -> list[str]:
+    soup = BeautifulSoup(html, "html.parser")
+    image_urls = []
+    for img_tag in soup.find_all("img", src=True):
+        src = img_tag["src"]
+        urljoined = urljoin(base_url, src)
+        image_urls.append(urljoined)
+    return image_urls
