@@ -1,6 +1,18 @@
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup, Tag
 from urllib.parse import urlparse, urljoin
+from typing import TypedDict
+
+class PageData(TypedDict):
+    url: str
+    heading: str
+    first_paragraph: str
+    outgoing_links: list[str]
+    image_urls: list[str]
+
+
+
+  
 
 
 def normalize_url(url):
@@ -43,3 +55,11 @@ def get_images_from_html(html: str, base_url: str) -> list[str]:
         urljoined = urljoin(base_url, src)
         image_urls.append(urljoined)
     return image_urls
+def extract_page_data(html: str, base_url: str) -> PageData:
+    return {
+        "url": base_url,
+        "heading": get_heading_from_html(html),
+        "first_paragraph": get_first_paragraph_from_html(html),
+        "outgoing_links": get_urls_from_html(html, base_url),
+        "image_urls": get_images_from_html(html, base_url)  
+    }
