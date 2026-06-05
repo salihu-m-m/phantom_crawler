@@ -5,6 +5,6 @@ build/
 dist/
 wheels/
 *.egg-info
-
+crawl_report.json
 # Virtual environments
 .venv

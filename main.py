@@ -1,6 +1,8 @@
 import sys
 import crawl
 import asyncio
+from json_report import write_json_report
+
 
 
 async def main():
@@ -21,6 +23,7 @@ async def main():
     for page in page_data.values():
         print(f"Found {len(page['outgoing_links'])} outgoing links on {page['url']}")
 
+    write_json_report(page_data)
     sys.exit(0)
 if __name__ == "__main__":
     asyncio.run(main())
